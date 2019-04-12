@@ -1,12 +1,3 @@
-# Author: Lucas Roelser <roesler.lucas@gmail.com>
-"""
-ssl_expriy_lambda uses the ssl_expiry script to allow you to check a list of
-SSL certificate expiration dates via AWS Gateway.
-
-See the README for configuration information
-"""
-
-
 import json
 import logging
 import os
@@ -24,7 +15,7 @@ def lambda_handler(event, *args, **kwargs) -> list:
     HOST_LIST = filter(None, (x.strip() for x in HOST_LIST))
 
     response = [
-        ssl_expiry.test_host(host + ".connectandsell.com", buffer_days=EXPIRY_BUFFER)
+        ssl_expiry.test_host(host + ".xyz.com", buffer_days=EXPIRY_BUFFER)
         for host in HOST_LIST
     ]
     resp = []
@@ -39,7 +30,7 @@ def lambda_handler(event, *args, **kwargs) -> list:
 
     if len(resp) > 0:
         res = sns.publish(
-            TopicArn='arn:aws:sns:us-west-2:936023071971:ssl-expiry',
+            TopicArn='',
             Message=json.dumps(resp),
             Subject='SSL Expiry Alert'
         )
